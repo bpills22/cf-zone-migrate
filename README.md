@@ -18,6 +18,7 @@ This script inventories Cloudflare zones and generates a CSV report to assist wi
 The script requires the Cloudflare API Token and Account ID to be set as environment variables.
 
 export CF_API_TOKEN="your-api-token"
+
 export CF_ACCOUNT_ID="your-account-id"
 
 Run the script using the following options:
