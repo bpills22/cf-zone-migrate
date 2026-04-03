@@ -2,7 +2,9 @@
 
 A set of bash scripts for migrating Cloudflare zones between accounts. Handles DNS record export/import, zone settings, Page Rules, and all Ruleset Engine phases (Redirect Rules, Cache Rules, Origin Rules, WAF Custom Rules, Transform Rules, etc.).
 
-Built for scenarios where zones need to be split across separate Cloudflare accounts, such as isolating Enterprise zones from Free zones for Account-level feature scoping (Bot Management, WAF, etc.).
+Built for scenarios where zones need to be split across separate Cloudflare accounts, such as isolating Enterprise zones from Free zones for Account-level feature scoping (Bot Management, WAF, etc.). 
+
+This is meant to help automate movement of zones as described here: https://developers.cloudflare.com/fundamentals/manage-domains/move-domain/
 
 ## Scripts
 
@@ -126,9 +128,9 @@ The cleanup script requires typing `DELETE` to confirm. It will not delete a zon
 
 The intended workflow is:
 
-1. **Audit** -- Run `cf-zone-audit.sh` against the source account to inventory zones and identify any blockers (DNSSEC, custom certs, complex rules).
+1. **Audit** -- Run `cf-zone-audit.sh` against the source account to inventory zones and identify any blockers (DNSSEC, custom certs, complex rules that might need manual re-creation).
 
-2. **Migrate in batches** -- Run `cf-zone-migrate.sh` with `--dry-run` first, review the exports, then run without `--dry-run`. Start with a pilot batch of 3-5 zones.
+2. **Migrate in batches** -- Run `cf-zone-migrate.sh` with `--dry-run` first, review the exports, then run without `--dry-run`. Start with a pilot batch of 3-5 zones and take note of Cloudflare's 1200 requests per 5m rate limit on the API.
 
 3. **Switch nameservers** -- Update NS records at the domain registrar to the new Cloudflare-assigned nameservers. The migration script outputs the new NS pair for each zone.
 
